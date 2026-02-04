@@ -14,6 +14,14 @@ import java.util.Map;
 /**
  * Customer DTO - TMF629 Customer Management API
  * Representa um cliente conforme especificação TMF629
+ * 
+ * Campos adicionados conforme planilha CamposParaAdicionar.xlsx:
+ * - formattedName: Nome completo do cliente (TMF632 Individual)
+ * - givenName: Primeiro nome (TMF632 Individual)
+ * - familyName: Sobrenome (TMF632 Individual)
+ * - preferredGivenName: Nome de preferência escolhido pelo cliente (TMF632 Individual)
+ * - tradingName: Razão social para PJ (TMF632 Organization)
+ * - partyIdentification: Lista de identificações (CPF, CNPJ) (TMF632)
  */
 @Data
 @Builder
@@ -44,12 +52,66 @@ public class CustomerDTO implements Serializable {
     @JsonProperty("segment")
     private String segment;
 
+    // ========== CAMPOS ADICIONADOS - TMF632 Individual ==========
+
+    /**
+     * Nome completo formatado do cliente (TMF632 Individual.formattedName)
+     * Exemplo: "João da Silva Santos"
+     */
+    @JsonProperty("formattedName")
+    private String formattedName;
+
+    /**
+     * Primeiro nome do cliente (TMF632 Individual.givenName)
+     * Exemplo: "João"
+     */
+    @JsonProperty("givenName")
+    private String givenName;
+
+    /**
+     * Sobrenome/Nome de família (TMF632 Individual.familyName)
+     * Exemplo: "Santos"
+     */
+    @JsonProperty("familyName")
+    private String familyName;
+
+    /**
+     * Nome de preferência escolhido pelo cliente no APP (TMF632 Individual)
+     * Exemplo: "Johne" - nome que o cliente deseja ser chamado
+     */
+    @JsonProperty("preferredGivenName")
+    private String preferredGivenName;
+
+    // ========== CAMPOS ADICIONADOS - TMF632 Organization ==========
+
+    /**
+     * Razão Social da empresa (TMF632 Organization.tradingName)
+     * Exemplo: "Souza e Silva Ltda"
+     */
+    @JsonProperty("tradingName")
+    private String tradingName;
+
+    // ========== CAMPOS ADICIONADOS - TMF632 Party Identification ==========
+
+    /**
+     * Lista de identificações do cliente (CPF, CNPJ, RG, etc.)
+     * Conforme TMF632 IndividualIdentification/OrganizationIdentification
+     */
+    @JsonProperty("partyIdentification")
+    private List<PartyIdentificationDTO> partyIdentification;
+
+    // ========== CAMPOS EXISTENTES ==========
+
     @JsonProperty("email")
     private String email;
 
     @JsonProperty("phone")
     private String phone;
 
+    /**
+     * @deprecated Use partyIdentification com identificationType="CPF"
+     */
+    @Deprecated
     @JsonProperty("cpf")
     private String cpf;
 
@@ -100,4 +162,15 @@ public class CustomerDTO implements Serializable {
 
     @JsonProperty("accountRef")
     private List<AccountRefDTO> accountRef;
+
+    // ========== CAMPOS TMF ==========
+
+    @JsonProperty("@type")
+    private String atType;
+
+    @JsonProperty("@baseType")
+    private String atBaseType;
+
+    @JsonProperty("@schemaLocation")
+    private String atSchemaLocation;
 }

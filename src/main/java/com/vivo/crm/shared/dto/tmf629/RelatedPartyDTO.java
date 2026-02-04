@@ -7,7 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
+/**
+ * Related Party DTO - TMF629/TMF632
+ * Representa uma parte relacionada ao cliente (gestor, grupo, etc.)
+ * 
+ * Campos adicionados conforme planilha CamposParaAdicionar.xlsx:
+ * - relationshipType: Tipo de relacionamento (isManagedBy, isMemberOfGroup)
+ * - characteristic: Características do relacionamento (codigoGrupo, nomeGrupo)
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -25,9 +34,39 @@ public class RelatedPartyDTO implements Serializable {
     @JsonProperty("name")
     private String name;
 
+    /**
+     * Papel da parte relacionada
+     * Exemplo: "Gestor", "Sócio", "Gestor de contato", "Gestor master"
+     */
     @JsonProperty("role")
     private String role;
 
+    /**
+     * Tipo de relacionamento conforme TMF632 PartyRelationship
+     * Valores: "isManagedBy" (gestor), "isMemberOfGroup" (grupo/hierarquia)
+     */
+    @JsonProperty("relationshipType")
+    private String relationshipType;
+
+    /**
+     * Características do relacionamento
+     * Para grupos: codigoGrupo, nomeGrupo (CORPORATE, GOVERNO)
+     */
+    @JsonProperty("characteristic")
+    private List<CharacteristicDTO> characteristic;
+
+    /**
+     * Período de validade do relacionamento
+     */
+    @JsonProperty("validFor")
+    private TimePeriodDTO validFor;
+
     @JsonProperty("@referredType")
-    private String referredType; // "Customer", "Organization", "User"
+    private String referredType; // "Customer", "Organization", "User", "Individual"
+
+    @JsonProperty("@type")
+    private String type;
+
+    @JsonProperty("@baseType")
+    private String baseType;
 }
